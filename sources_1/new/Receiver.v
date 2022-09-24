@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
-
+//This module is applying UART protocol receiving part
+//This module captures bits from their middle point
+//This module starts to capture data if RxD suddenly becames 0
 module Receiver(
     input clk,
     input reset,
