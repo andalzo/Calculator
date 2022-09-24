@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module tb_durumlar(
+module tb_Data_Interpreter(
 
     );
     
