@@ -2,7 +2,7 @@
 
 
 
-module Extraction_Tb();
+module Square_Tb();
 
 	reg [8:0]numberIn_tb;
 	wire [6:0]whole;
