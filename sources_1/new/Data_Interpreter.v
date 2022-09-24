@@ -1,5 +1,8 @@
 `timescale 1ns / 1ps
 
+//This is a state machine to captures specific ASCII_VALUES with special produced clk
+//Its purpose is to capture number,operation char/number,number,operation char/number,number,number,oparation 
+//The number must be between 0 to 360
 module Data_Interpreter(
     input clk_data_came, //This signal determines if the data has been received by UART
 	input [7:0] ASCII_in,
@@ -17,9 +20,9 @@ module Data_Interpreter(
     reg [2:0] state = 0;
     reg [2:0]state_next = 0;
     
-   	reg [3:0] digit2; //Birler basamak
-   	reg [7:0] digit1; // Onlar basamak
-   	reg [9:0] digit0; //Yuzler basamak
+	reg [3:0] digit2; //Ones
+	reg [7:0] digit1; // Tens
+	reg [9:0] digit0; //Hundreds
    	
    	reg [3:0] digit2_next = 0; // max 9
     reg [7:0] digit1_next = 0; //max 90
