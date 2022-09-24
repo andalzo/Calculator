@@ -9,6 +9,7 @@ module Main(
     output dotEnable // dot signal to enable the dot in the middle
     );
     
+    //This is the receiver module of fpga, we used UART protocol to receive data from computer keyboard and determines if data came via data_came wire.
     wire data_came;
     wire [7:0]ascii_data;
     Receiver uart_receiver(clk_fpga_100mhz, 
@@ -18,17 +19,17 @@ module Main(
                            data_came);
     
                            
-    
-    wire [2:0]operation_mode;
-    wire [1:0]data_state;
-    wire [9:0]input_number;
-    wire print_enable;
+    //The Data Interpreter module interperetes the coming data, and produces several major outputs.
+    wire [2:0]operation_mode; //Operation Mode is the choice of operation; SIN/COS/IS_PRİME/SQUARE/NO_OPERATİON
+    wire [1:0]data_state; //The state of data, if it is in input state, output state or error state
+    wire [9:0]input_number; //The coming number to display in 7-segment displayer
+    wire print_enable_debug; //The debug property should the input number displayed
     Data_Interpreter interpreter(data_came,
                                  ascii_data,
                                  operation_mode,   
                                  data_state,
                                  input_number,
-                                 print_enable); 
+                                 print_enable_debug); 
     
 
     localparam SIN = 0;
@@ -59,6 +60,7 @@ module Main(
     reg [6:0]choicen_fracture;
     reg choicen_sign;
     
+    //Choicing right result to send the 7-segment displayer
     wire [13:0]output_number;
     always @(posedge (data_state == 1) ) begin      
         case(operation_mode)
@@ -89,8 +91,10 @@ module Main(
             end
         endcase
     end
-    assign output_number = choicen_whole*100 + choicen_fracture;
+    //In the end of operations, the modules produces two 7-bit number, first one is whole; second one is fraction part of bigger number
+    assign output_number = choicen_whole*100 + choicen_fracture; 
 
+    //The SevenSegmentDisplayer module, this module produces to signal to 7-segment displayer
     SevenSegmentDisplayer(clk_fpga_100mhz,
                           reset,
                           data_state,  
